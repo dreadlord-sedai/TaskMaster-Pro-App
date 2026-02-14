@@ -10,11 +10,11 @@
 ## Database Setup
 
 1. Create a database named `taskmaster_pro`.
-2. Update credentials in [TaskMasterProBackend/src/main/resources/hibernate.cfg.xml](TaskMasterProBackend/src/main/resources/hibernate.cfg.xml).
+2. Update credentials in the TaskTarget backend config at [TaskMasterProBackend/src/main/resources/hibernate.cfg.xml](TaskMasterProBackend/src/main/resources/hibernate.cfg.xml).
 
 ## Run The Backend
 
-From [TaskMasterProBackend](TaskMasterProBackend):
+From the TaskTarget backend folder [TaskMasterProBackend](TaskMasterProBackend):
 
 ```bash
 mvn -q -DskipTests exec:java -Dexec.mainClass=com.taskmaster.server.TaskServer

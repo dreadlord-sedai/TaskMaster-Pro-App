@@ -30,7 +30,7 @@ For deeper details, see the docs:
 
 1. Install prerequisites: JDK 21, Maven, and MySQL.
 2. Create a database named `taskmaster_pro`.
-3. Update credentials and connection settings in [TaskMasterProBackend/src/main/resources/hibernate.cfg.xml](TaskMasterProBackend/src/main/resources/hibernate.cfg.xml).
+3. Update credentials and connection settings in the TaskTarget backend config at [TaskMasterProBackend/src/main/resources/hibernate.cfg.xml](TaskMasterProBackend/src/main/resources/hibernate.cfg.xml).
 4. Start the server:
 
 ```bash
