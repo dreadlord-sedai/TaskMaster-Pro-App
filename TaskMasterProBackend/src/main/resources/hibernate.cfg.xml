@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- Database Connection Settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/taskmaster_pro?useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">mysql2006</property>
+        
+        <!-- JDBC Connection Pool -->
+        <property name="hibernate.connection.pool_size">10</property>
+        
+        <!-- SQL Dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        
+        <!-- Show SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.format_sql">true</property>
+        
+        <!-- Auto DDL -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+        
+        <!-- Current Session Context -->
+        <property name="hibernate.current_session_context_class">thread</property>
+        
+        <!-- Disable cache -->
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        
+        <!-- Mapping Classes -->
+        <mapping class="com.taskmaster.model.Task"/>
+    </session-factory>
+</hibernate-configuration>

@@ -1,0 +1,5 @@
+com\taskmaster\server\LocalDateAdapter.class
+com\taskmaster\util\HibernateUtil.class
+com\taskmaster\model\Task.class
+com\taskmaster\server\TaskServer.class
+com\taskmaster\dao\TaskDAO.class
