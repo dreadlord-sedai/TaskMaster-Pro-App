@@ -103,6 +103,52 @@ public class TaskDAO {
         
         return success;
     }
+
+    /**
+     * Update an existing task's details (title/description/date/completion).
+     *
+     * @param updatedTask Task object containing updated fields and an id
+     * @return Updated task, or null if not found
+     */
+    public Task updateTask(Task updatedTask) {
+        if (updatedTask == null || updatedTask.getId() == null) {
+            return null;
+        }
+
+        Transaction transaction = null;
+        Task existingTask = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            existingTask = session.get(Task.class, updatedTask.getId());
+
+            if (existingTask != null) {
+                existingTask.setTitle(updatedTask.getTitle());
+                existingTask.setDescription(updatedTask.getDescription());
+
+                if (updatedTask.getCreatedDate() != null) {
+                    existingTask.setCreatedDate(updatedTask.getCreatedDate());
+                }
+
+                if (updatedTask.getIsCompleted() != null) {
+                    existingTask.setIsCompleted(updatedTask.getIsCompleted());
+                }
+
+                session.update(existingTask);
+            }
+
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return null;
+        }
+
+        return existingTask;
+    }
     
     /**
      * Delete a task from the database.

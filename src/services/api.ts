@@ -91,6 +91,31 @@ export const updateTaskStatus = async (
   }
 };
 
+export const updateTask = async (task: Task): Promise<Task> => {
+  try {
+    console.log("Updating task:", task);
+    const response = await fetch(`${API_BASE_URL}/tasks/edit`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(task),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const rawTask = await response.json();
+    const savedTask: Task = normalizeTask(rawTask);
+    console.log("Task updated:", savedTask);
+    return savedTask;
+  } catch (error) {
+    console.error("Error updating task:", error);
+    throw error;
+  }
+};
+
 export const deleteTask = async (taskId: number): Promise<boolean> => {
   try {
     const response = await fetch(`${API_BASE_URL}/tasks/delete`, {

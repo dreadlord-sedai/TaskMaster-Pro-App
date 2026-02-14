@@ -11,7 +11,7 @@ import {
   Platform,
 } from "react-native";
 import { Task } from "../types/task";
-import { saveTask } from "../services/api";
+import { saveTask, updateTask } from "../services/api";
 
 interface AddEditTaskScreenProps {
   navigation: any;
@@ -83,16 +83,23 @@ const AddEditTaskScreen: React.FC<AddEditTaskScreenProps> = ({
     try {
       setSaving(true);
 
-      // Prepare task object
-      const taskToSave: Omit<Task, "id"> = {
+      const taskToSave: Task = {
+        id: task?.id,
         title: title.trim(),
         description: description.trim(),
-        created_date: new Date().toISOString().split("T")[0], // Format: YYYY-MM-DD
-        is_completed: false,
+        created_date:
+          task?.created_date || new Date().toISOString().split("T")[0],
+        is_completed: task?.is_completed ?? false,
       };
 
-      // Call API service to save task
-      const savedTask = await saveTask(taskToSave);
+      const savedTask = isEditMode
+        ? await updateTask(taskToSave)
+        : await saveTask({
+            title: taskToSave.title,
+            description: taskToSave.description,
+            created_date: taskToSave.created_date,
+            is_completed: taskToSave.is_completed,
+          });
 
       console.log("Task saved with ID:", savedTask.id);
 

@@ -35,6 +35,7 @@ public class TaskServer {
         server.createContext("/api/tasks", TaskServer::handleTasks);
         server.createContext("/api/tasks/save", TaskServer::handleSaveTask);
         server.createContext("/api/tasks/update", TaskServer::handleUpdateTask);
+        server.createContext("/api/tasks/edit", TaskServer::handleEditTask);
         server.createContext("/api/tasks/delete", TaskServer::handleDeleteTask);
         
         // Set executor and start server
@@ -46,6 +47,7 @@ public class TaskServer {
         System.out.println("  GET  /api/tasks - Fetch all tasks");
         System.out.println("  POST /api/tasks/save - Save a new task");
         System.out.println("  POST /api/tasks/update - Update task status");
+        System.out.println("  POST /api/tasks/edit - Update task details");
         System.out.println("  POST /api/tasks/delete - Delete a task");
         
         // Add shutdown hook
@@ -122,6 +124,33 @@ public class TaskServer {
                 : "{\"success\":false,\"message\":\"Task not found\"}";
             
             sendJsonResponse(exchange, success ? 200 : 404, jsonResponse);
+        } else {
+            sendJsonResponse(exchange, 405, "{\"error\":\"Method not allowed\"}");
+        }
+    }
+
+    /**
+     * Handle POST request to update task details (title/description/etc).
+     */
+    private static void handleEditTask(HttpExchange exchange) throws IOException {
+        if ("POST".equals(exchange.getRequestMethod())) {
+            String requestBody = readRequestBody(exchange);
+            Task updatedTask = gson.fromJson(requestBody, Task.class);
+
+            if (updatedTask == null || updatedTask.getId() == null) {
+                sendJsonResponse(exchange, 400, "{\"success\":false,\"message\":\"Task id is required\"}");
+                return;
+            }
+
+            Task savedTask = taskDAO.updateTask(updatedTask);
+
+            if (savedTask == null) {
+                sendJsonResponse(exchange, 404, "{\"success\":false,\"message\":\"Task not found\"}");
+                return;
+            }
+
+            String jsonResponse = gson.toJson(savedTask);
+            sendJsonResponse(exchange, 200, jsonResponse);
         } else {
             sendJsonResponse(exchange, 405, "{\"error\":\"Method not allowed\"}");
         }
