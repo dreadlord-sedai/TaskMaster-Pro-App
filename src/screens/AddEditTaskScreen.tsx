@@ -197,7 +197,7 @@ const AddEditTaskScreen: React.FC<AddEditTaskScreenProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: "#F6F1E9",
   },
   scrollContent: {
     padding: 20,
@@ -208,21 +208,21 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#333333",
+    color: "#0F4C5C",
     marginBottom: 8,
   },
   required: {
-    color: "#F44336",
+    color: "#D1495B",
   },
   input: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: "#E7DFD6",
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
-    color: "#333333",
+    color: "#1F2A33",
   },
   textArea: {
     minHeight: 120,
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
   },
   charCount: {
     fontSize: 12,
-    color: "#999999",
+    color: "#8C8379",
     textAlign: "right",
     marginTop: 4,
   },
@@ -250,15 +250,15 @@ const styles = StyleSheet.create({
   cancelButton: {
     backgroundColor: "#FFFFFF",
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: "#E7DFD6",
   },
   cancelButtonText: {
     fontSize: 16,
     fontWeight: "600",
-    color: "#666666",
+    color: "#5C7A89",
   },
   saveButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#E36414",
   },
   saveButtonText: {
     fontSize: 16,

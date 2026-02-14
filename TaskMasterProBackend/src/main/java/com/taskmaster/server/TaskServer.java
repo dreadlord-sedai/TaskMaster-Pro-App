@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * Simple HTTP Server for TaskMaster Pro API.
+ * Simple HTTP Server for TaskTarget API.
  * Uses Java SE HttpServer to handle REST API requests.
  */
 public class TaskServer {
@@ -41,7 +41,7 @@ public class TaskServer {
         server.setExecutor(null);
         server.start();
         
-        System.out.println("TaskMaster Pro Server started on port 8080");
+        System.out.println("TaskTarget Server started on port 8080");
         System.out.println("Available endpoints:");
         System.out.println("  GET  /api/tasks - Fetch all tasks");
         System.out.println("  POST /api/tasks/save - Save a new task");

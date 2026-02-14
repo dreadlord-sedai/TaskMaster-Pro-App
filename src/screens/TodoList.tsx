@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,9 +8,9 @@ import {
   ActivityIndicator,
   Alert,
   RefreshControl,
-} from 'react-native';
-import { Task } from '../types/task';
-import { fetchAllTasks, deleteTask, updateTaskStatus } from '../services/api';
+} from "react-native";
+import { Task } from "../types/task";
+import { fetchAllTasks, deleteTask, updateTaskStatus } from "../services/api";
 
 interface TodoListScreenProps {
   navigation: any; // Replace with proper NavigationProp type
@@ -18,13 +18,13 @@ interface TodoListScreenProps {
 
 /**
  * TodoList Screen Component
- * 
+ *
  * Displays all tasks in a FlatList with the following features:
  * - Pull-to-refresh functionality
  * - Delete task action
  * - Toggle task completion status
  * - Navigate to Add/Edit screen
- * 
+ *
  * Uses React Hooks:
  * - useState: Manage tasks list, loading state, and refreshing state
  * - useEffect: Fetch tasks when component mounts
@@ -53,8 +53,8 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
       const fetchedTasks = await fetchAllTasks();
       setTasks(fetchedTasks);
     } catch (error) {
-      console.error('Error loading tasks:', error);
-      Alert.alert('Error', 'Failed to load tasks. Please try again.');
+      console.error("Error loading tasks:", error);
+      Alert.alert("Error", "Failed to load tasks. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -72,43 +72,41 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
 
   /**
    * Handle task deletion with confirmation dialog.
-   * 
+   *
    * @param taskId - ID of the task to delete
    */
   const handleDeleteTask = (taskId: number | undefined) => {
     if (!taskId) return;
 
-    Alert.alert(
-      'Delete Task',
-      'Are you sure you want to delete this task?',
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: async () => {
-            try {
-              const success = await deleteTask(taskId);
-              if (success) {
-                // Remove task from local state
-                setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-                Alert.alert('Success', 'Task deleted successfully');
-              } else {
-                Alert.alert('Error', 'Failed to delete task');
-              }
-            } catch (error) {
-              console.error('Error deleting task:', error);
-              Alert.alert('Error', 'An error occurred while deleting the task');
+    Alert.alert("Delete Task", "Are you sure you want to delete this task?", [
+      { text: "Cancel", style: "cancel" },
+      {
+        text: "Delete",
+        style: "destructive",
+        onPress: async () => {
+          try {
+            const success = await deleteTask(taskId);
+            if (success) {
+              // Remove task from local state
+              setTasks((prevTasks) =>
+                prevTasks.filter((task) => task.id !== taskId),
+              );
+              Alert.alert("Success", "Task deleted successfully");
+            } else {
+              Alert.alert("Error", "Failed to delete task");
             }
-          },
+          } catch (error) {
+            console.error("Error deleting task:", error);
+            Alert.alert("Error", "An error occurred while deleting the task");
+          }
         },
-      ]
-    );
+      },
+    ]);
   };
 
   /**
    * Toggle task completion status.
-   * 
+   *
    * @param task - Task object to toggle
    */
   const handleToggleComplete = async (task: Task) => {
@@ -120,36 +118,36 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
 
       if (success) {
         // Update task in local state
-        setTasks(prevTasks =>
-          prevTasks.map(t =>
-            t.id === task.id ? { ...t, is_completed: newStatus } : t
-          )
+        setTasks((prevTasks) =>
+          prevTasks.map((t) =>
+            t.id === task.id ? { ...t, is_completed: newStatus } : t,
+          ),
         );
       } else {
-        Alert.alert('Error', 'Failed to update task status');
+        Alert.alert("Error", "Failed to update task status");
       }
     } catch (error) {
-      console.error('Error updating task:', error);
-      Alert.alert('Error', 'An error occurred while updating the task');
+      console.error("Error updating task:", error);
+      Alert.alert("Error", "An error occurred while updating the task");
     }
   };
 
   /**
    * Navigate to Add/Edit Task Screen.
-   * 
+   *
    * @param task - Optional task to edit (undefined for new task)
    */
   const navigateToAddEdit = (task?: Task) => {
-    navigation.navigate('AddEditTask', { 
-      task, 
-      onTaskSaved: loadTasks // Callback to refresh list after save
+    navigation.navigate("AddEditTask", {
+      task,
+      onTaskSaved: loadTasks, // Callback to refresh list after save
     });
   };
 
   /**
    * Render individual task item.
    * This function is passed to FlatList's renderItem prop.
-   * 
+   *
    * @param item - Task object
    */
   const renderTaskItem = ({ item }: { item: Task }) => (
@@ -160,10 +158,12 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
           style={styles.checkbox}
           onPress={() => handleToggleComplete(item)}
         >
-          <View style={[
-            styles.checkboxInner,
-            item.is_completed && styles.checkboxChecked
-          ]}>
+          <View
+            style={[
+              styles.checkboxInner,
+              item.is_completed && styles.checkboxChecked,
+            ]}
+          >
             {item.is_completed && <Text style={styles.checkmark}>✓</Text>}
           </View>
         </TouchableOpacity>
@@ -172,7 +172,7 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
           <Text
             style={[
               styles.taskTitle,
-              item.is_completed && styles.taskTitleCompleted
+              item.is_completed && styles.taskTitleCompleted,
             ]}
           >
             {item.title}
@@ -204,18 +204,18 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
 
   /**
    * Format date string to readable format.
-   * 
+   *
    * @param dateString - ISO date string (YYYY-MM-DD)
    * @returns Formatted date string (MMM DD, YYYY)
    */
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
-    const options: Intl.DateTimeFormatOptions = { 
-      year: 'numeric', 
-      month: 'short', 
-      day: 'numeric' 
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     };
-    return date.toLocaleDateString('en-US', options);
+    return date.toLocaleDateString("en-US", options);
   };
 
   /**
@@ -236,7 +236,7 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
   if (loading) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007AFF" />
+        <ActivityIndicator size="large" color="#E36414" />
         <Text style={styles.loadingText}>Loading tasks...</Text>
       </View>
     );
@@ -281,48 +281,48 @@ const TodoListScreen: React.FC<TodoListScreenProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: "#F6F1E9",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingHorizontal: 20,
     paddingVertical: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFF8F2",
     borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    borderBottomColor: "#E7DFD6",
   },
   headerTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333333',
+    fontWeight: "bold",
+    color: "#0F4C5C",
   },
   addButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#E36414",
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 8,
   },
   addButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   listContent: {
     paddingVertical: 8,
     flexGrow: 1,
   },
   taskItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
     marginHorizontal: 16,
     marginVertical: 6,
     padding: 16,
     borderRadius: 12,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -330,8 +330,8 @@ const styles = StyleSheet.create({
   },
   taskContent: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   checkbox: {
     marginRight: 12,
@@ -341,87 +341,87 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 12,
     borderWidth: 2,
-    borderColor: '#007AFF',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderColor: "#0F4C5C",
+    justifyContent: "center",
+    alignItems: "center",
   },
   checkboxChecked: {
-    backgroundColor: '#007AFF',
+    backgroundColor: "#0F4C5C",
   },
   checkmark: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   taskDetails: {
     flex: 1,
   },
   taskTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333333',
+    fontWeight: "600",
+    color: "#1F2A33",
     marginBottom: 4,
   },
   taskTitleCompleted: {
-    textDecorationLine: 'line-through',
-    color: '#999999',
+    textDecorationLine: "line-through",
+    color: "#999999",
   },
   taskDate: {
     fontSize: 12,
-    color: '#666666',
+    color: "#5C7A89",
   },
   taskActions: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 8,
   },
   editButton: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: "#2A9D8F",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
   },
   editButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   deleteButton: {
-    backgroundColor: '#F44336',
+    backgroundColor: "#D1495B",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 6,
   },
   deleteButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: 14,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   emptyContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     paddingVertical: 60,
   },
   emptyText: {
     fontSize: 20,
-    fontWeight: '600',
-    color: '#999999',
+    fontWeight: "600",
+    color: "#5C7A89",
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 14,
-    color: '#CCCCCC',
+    color: "#B7AFA6",
   },
   loadingContainer: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5F5F5',
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#F6F1E9",
   },
   loadingText: {
     marginTop: 12,
     fontSize: 16,
-    color: '#666666',
+    color: "#5C7A89",
   },
 });
 

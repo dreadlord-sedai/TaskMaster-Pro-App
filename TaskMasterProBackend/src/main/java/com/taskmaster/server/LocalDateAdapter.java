@@ -30,7 +30,7 @@ public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserial
 //
 //### Project Structure
 //```
-//TaskMasterPro/
+//TaskTarget/
 //├── src/
 //│   ├── components/
 //│   │   └── TaskItem.tsx
